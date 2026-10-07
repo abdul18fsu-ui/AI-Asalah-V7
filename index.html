@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI A.Salah</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #eef4ff;
+      color: #102040;
+    }
+    .app {
+      max-width: 700px;
+      margin: auto;
+      min-height: 100vh;
+      background: white;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      background: #0b5cff;
+      color: white;
+      padding: 22px 18px;
+      text-align: center;
+    }
+    header h1 { margin: 0 0 5px; }
+    header p { margin: 0; opacity: .9; }
+    #status {
+      font-size: 13px;
+      margin-top: 8px;
+    }
+    #chat {
+      flex: 1;
+      padding: 18px;
+      overflow-y: auto;
+    }
+    .msg {
+      padding: 12px 14px;
+      border-radius: 14px;
+      margin: 10px 0;
+      max-width: 85%;
+      white-space: pre-wrap;
+    }
+    .user {
+      background: #0b5cff;
+      color: white;
+      margin-left: auto;
+    }
+    .ai {
+      background: #edf2f8;
+      margin-right: auto;
+    }
+    .quick {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      padding: 10px 14px;
+      border-top: 1px solid #ddd;
+    }
+    button {
+      border: 0;
+      border-radius: 10px;
+      padding: 10px 13px;
+      background: #e7efff;
+      color: #0b4bc4;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .composer {
+      display: flex;
+      gap: 8px;
+      padding: 14px;
+      border-top: 1px solid #ddd;
+    }
+    input {
+      flex: 1;
+      padding: 13px;
+      border: 1px solid #ccd5e2;
+      border-radius: 10px;
+      font-size: 16px;
+      outline: none;
+    }
+    .send {
+      background: #0b5cff;
+      color: white;
+      min-width: 70px;
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <h1>🤖 AI A.Salah</h1>
+      <p>Your Personal Intelligence (PI)</p>
+      <div id="status">Online — Free Demo Mode</div>
+    </header>
+
+    <main id="chat"></main>
+
+    <div class="quick">
+      <button onclick="quick('Hello AI A.Salah')">Hello</button>
+      <button onclick="quick('Teach me coding')">Coding</button>
+      <button onclick="quick('Give me motivation')">Motivation</button>
+      <button onclick="quick('Tell me about AI')">AI</button>
+      <button onclick="clearChat()">Clear</button>
+    </div>
+
+    <div class="composer">
+      <input id="input" placeholder="Message AI A.Salah..." autocomplete="off">
+      <button class="send" onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+
+  <script>
+    const chat = document.getElementById("chat");
+    const input = document.getElementById("input");
+
+    function addMessage(text, who) {
+      const div = document.createElement("div");
+      div.className = "msg " + who;
+      div.textContent = text;
+      chat.appendChild(div);
+      chat.scrollTop = chat.scrollHeight;
+    }
+
+    function demoReply(text) {
+      const t = text.toLowerCase();
+
+      if (t.includes("hello") || t.includes("hi")) {
+        return "Hello boss 👋 I’m AI A.Salah, your Personal Intelligence. How can I help you today?";
+      }
+      if (t.includes("coding") || t.includes("code")) {
+        return "Sure boss. We can start coding from Day 1 and learn step by step using your phone.";
+      }
+      if (t.includes("motivation")) {
+        return "Keep going, boss 💙. Small progress every day can become something very big. Insha Allah.";
+      }
+      if (t.includes("ai")) {
+        return "AI means Artificial Intelligence. AI A.Salah is your own project, designed to become your Personal Intelligence.";
+      }
+
+      return "I’m in Free Demo Mode right now. I received your message: “" + text +
+             "”. The real AI connection can be added later with a secure backend.";
+    }
+
+    function sendMessage() {
+      const text = input.value.trim();
+      if (!text) return;
+
+      addMessage(text, "user");
+      input.value = "";
+
+      setTimeout(() => {
+        addMessage(demoReply(text), "ai");
+        saveChat();
+      }, 350);
+    }
+
+    function quick(text) {
+      input.value = text;
+      sendMessage();
+    }
+
+    function saveChat() {
+      localStorage.setItem("ai_asalah_chat", chat.innerHTML);
+    }
+
+    function loadChat() {
+      const saved = localStorage.getItem("ai_asalah_chat");
+      if (saved) {
+        chat.innerHTML = saved;
+      } else {
+        addMessage("Assalamu alaikum 👋 I’m AI A.Salah. Welcome to your Personal Intelligence.", "ai");
+      }
+    }
+
+    function clearChat() {
+      localStorage.removeItem("ai_asalah_chat");
+      chat.innerHTML = "";
+      addMessage("Chat cleared. Welcome back to AI A.Salah 🤖", "ai");
+    }
+
+    input.addEventListener("keydown", e => {
+      if (e.key === "Enter") sendMessage();
+    });
+
+    loadChat();
+  </script>
+</body>
+</html>
